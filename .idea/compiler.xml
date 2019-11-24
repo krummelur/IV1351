@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="ID1020-Sample-data_main" target="1.8" />
+      <module name="ID1020-Sample-data_test" target="1.8" />
+      <module name="IV1351-Sample-data_main" target="1.8" />
+      <module name="IV1351-Sample-data_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
