@@ -1,8 +1,6 @@
 package IV1351.DB;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,8 +27,9 @@ class Column {
     final boolean notNull;
     final ForeignKey fk;
 
-    public void setAutoNumber() {
+    public Column setAutoNumber() {
         this.isAutoNumber = true;
+        return this;
     }
 
     public Column(String name, String attrType) {
@@ -75,7 +74,7 @@ public class Table {
     public void populateFromCSV(String filePath) {
         String fileContents = null;
         try {
-            Path path = Paths.get(new String(filePath.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+            Path path = Paths.get(new String(filePath.getBytes("UTF-8")));
             fileContents = new String (Files.readAllBytes(path));
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,6 +114,8 @@ public class Table {
             if(getColumn(col).isAutoNumber)
                 val = "" + getColumn(col).autonumberIndex++;
 
+            if(val == null)
+                System.out.println("hmm");
             newRow[columns.indexOf(getColumn(col))] = val;
         });
         rows.add(newRow);
@@ -167,6 +168,45 @@ public class Table {
         }
         throw new RuntimeException("No such column in table (" + colName +")");
     }
+
+    private void removeTrailingChars(String match, StringBuilder sb) {
+        if(sb.lastIndexOf(match) != -1)
+            sb.replace(sb.length()-match.length(), sb.length(), "");
+    }
+
+    String getPopulationStatement() {
+        StringBuilder psb = new StringBuilder()
+                .append("INSERT INTO `" + this.tableName +"` (");
+        for(Column c : this.columns) {
+            if(!c.isAutoNumber)
+                psb.append(" `" + c.name + "`,");
+        }
+        this.removeTrailingChars(",", psb);
+        psb.append(")\nVALUES ");
+
+        for(String[] r : this.rows) {
+            psb.append("(");
+            for(int i = 0; i < r.length; i++) {
+                Column insertColumn = this.columns.get(i);
+                if(!insertColumn.isAutoNumber) {
+                    if(r[i] == null)
+                        System.out.println("hmm");
+                    String value =  r[i].trim();
+                    if(value.equals(""))
+                        value = "null";
+                    else if(insertColumn.attrType.toLowerCase().contains("varchar"))
+                        value = "\'"+value+"\'";
+                    psb.append(value+",");
+                }
+            }
+            this.removeTrailingChars(",",psb);
+            psb.append("),\n");
+        }
+        this.removeTrailingChars(",\n",psb);
+        psb.append(";");
+        return psb.toString();
+    }
+
     String getCreationStatement() {
         StringBuilder pkc = new StringBuilder()
         .append(" PRIMARY KEY(");
@@ -183,9 +223,12 @@ public class Table {
                 sb.append("NOT NULL ");
             if(c.unique)
                 sb.append("UNIQUE ");
+            if(c.isAutoNumber)
+                sb.append("AUTO_INCREMENT ");
+
             if (c.fk != null)
                 sb.append("REFERENCES " + c.fk.fromTable.tableName + "(" + c.fk.fromKey.name + ")");
-            sb.append(",");
+            sb.append(",\n");
         }
 
         //if(sb.lastIndexOf(",") != -1)

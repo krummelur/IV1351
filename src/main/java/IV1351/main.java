@@ -8,6 +8,7 @@ public class main {
         DataBase db = new DataBase("Bostadbäst");
         BostadBast.tables().forEach(db::addTable);
         //db.toXMLSchema();
-        System.out.println(db.toSQL());
+        System.out.println(db.toSQLCreation());
+        System.out.println(db.toSQLPopulation());
     }
 }

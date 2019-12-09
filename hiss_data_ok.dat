@@ -4,8 +4,8 @@ hissid, beteckning, maxvikt, maxantalpersoner, husid
 3, , 500, 5, 3
 4, , 500, 5, 4
 5, , 500, 5, 6
-6, "endast bostäder", 500, 5, 7
-7, "källar", 500, 5, 7
+6, endast bostäder, 500, 5, 7
+7, källar, 500, 5, 7
 8, , 500, 5, 8
 9, , 500, 5, 9
 10, , 500, 5, 10
