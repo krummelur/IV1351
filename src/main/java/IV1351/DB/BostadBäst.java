@@ -1,5 +1,7 @@
 package IV1351.DB;
 
+import IV1351.DB.Table;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,37 +14,37 @@ public class BostadBäst {
     public static ArrayList<Table> tables() {
         Table brf = new Table("Bostadsrättsförening")
         .addColumn(new Column("organisationsNummer", true, true, "integer"))
-        .addColumn(new Column("namn", true, false, "string"));
+        .addColumn(new Column("namn", true, false, "varchar(128)"));
 
         Table bostadsrättsgupp = new Table("Bostadsrättsgrupp")
-        .addColumn(new Column("bostadsrättsgruppsid", true, false, "integer"))
-        .addColumn(new Column("namn", "string"))
+        .addColumn(new Column("bostadsrättsgruppsid", true, true, "integer"))
+        .addColumn(new Column("namn", "varchar(128)"))
         .addColumn(new Column("bostadsrättsförening", false, false, new ForeignKey(brf, brf.getColumn("organisationsnummer")), "integer"));
 
         Table hus = new Table("Hus")
         .addColumn(new Column("husid", true, true, null, "integer"))
         .addColumn(new Column("bostadsrättförening", false, false,
                 new ForeignKey(brf, brf.getColumn("organisationsnummer")), "integer"))
-        .addColumn(new Column("gatuadress", "string"))
-        .addColumn(new Column("postadress", "string"))
+        .addColumn(new Column("gatuadress", "varchar(128)"))
+        .addColumn(new Column("postadress", "varchar(128)"))
         .addColumn(new Column("byggår", false, false, null, "integer"));
 
         Table cykelRum = new Table("Cykelrum")
         .addColumn(new Column("cykelrumsid", true, true, null, "integer"))
         .addColumn(new Column("husid", false, false,
                 new ForeignKey(hus, hus.getColumn("husid")), "integer"))
-        .addColumn(new Column("beteckning", "string"))
+        .addColumn(new Column("beteckning", "varchar(128)"))
         .addColumn(new Column("yta", "integer"));
 
         Table tvättstuga = new Table("Tvättstuga")
         .addColumn(new Column("tvättstugeid", true, true, null, "integer"))
         .addColumn(new Column("husid", false, false,
                 new ForeignKey(hus, hus.getColumn("husid")), "integer"))
-        .addColumn(new Column("beteckning", "string"))
+        .addColumn(new Column("beteckning", "varchar(128)"))
         .addColumn(new Column("yta", "integer"));
 
         Table maskin = new Table("Maskin")
-        .addColumn(new Column("maskintyp", "string"))
+        .addColumn(new Column("maskintyp", "varchar(128)"))
         .addColumn(new Column("tvättstugeid", false, true,
                 new ForeignKey(tvättstuga, tvättstuga.getColumn("tvättstugeid")), "integer"))
         .addColumn(new Column("antal", false, false, null, "integer"));
@@ -57,7 +59,7 @@ public class BostadBäst {
 
         Table hissBestiktningsFöretag = new Table("hissbesiktningsföretag")
         .addColumn(new Column("organisationsnummer", true, true, null, "integer"))
-        .addColumn(new Column("name", true, false, null, "string"));
+        .addColumn(new Column("name", true, false, null, "varchar(128)"));
 
         Table besiktning = new Table("Besiktning")
         .addColumn(new Column("hissid", false, true, new ForeignKey(hiss, hiss.getColumn("hissid")), "integer"))
@@ -83,7 +85,7 @@ public class BostadBäst {
                 .addColumn(new Column("belopp", false, false, null, "integer"));
 
         Table person = new Table("Person")
-                .addColumn(new Column("namn", false, false, null, "string"))
+                .addColumn(new Column("namn", false, false, null, "varchar(128)"))
                 .addColumn(new Column("personnummer", true, true, null, "integer"));
 
         Table ägandeskap = new Table("Ägandeskap")

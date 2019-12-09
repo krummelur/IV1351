@@ -124,4 +124,36 @@ public class Table {
         }
         throw new RuntimeException("No such column in table");
     }
+    String getCreationStatement() {
+        StringBuilder pkc = new StringBuilder()
+        .append(" PRIMARY KEY(");
+
+        StringBuilder sb = new StringBuilder()
+        .append("create table ")
+        .append("`" + tableName + "` (");
+        for(Column c: this.columns){
+        sb.append(c.name + " " + c.attrType + " ");
+        if(c.pk)
+            pkc.append(" " + c.name + ",");
+
+            if (c.notNull)
+                sb.append("NOT NULL ");
+            if(c.unique)
+                sb.append("UNIQUE ");
+            if (c.fk != null)
+                sb.append("REFERENCES " + c.fk.fromTable.tableName + "(" + c.fk.fromKey.name + ")");
+            sb.append(",");
+        }
+
+        //if(sb.lastIndexOf(",") != -1)
+        //    sb.replace(sb.length()-1, sb.length(), "");
+
+        if(pkc.lastIndexOf(",") != -1)
+            pkc.replace(pkc.length()-1, pkc.length(), "");
+
+        pkc.append(")");
+        sb.append(pkc.toString());
+        sb.append(");\n");
+        return sb.toString();
+    }
 }

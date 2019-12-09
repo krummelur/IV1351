@@ -7,6 +7,7 @@ public class main {
     public static void main(String[] args) {
         DataBase db = new DataBase("Bostadbäst");
         BostadBäst.tables().forEach(db::addTable);
-        db.toXMLSchema();
+        //db.toXMLSchema();
+        System.out.println(db.toSQL());
     }
 }
