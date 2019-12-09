@@ -1,5 +1,11 @@
 package IV1351.DB;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,12 +20,18 @@ class ForeignKey {
 }
 
 class Column {
+    boolean isAutoNumber = false;
+    int autonumberIndex = 1;
     final String attrType;
     final String name;
     final boolean unique;
     final boolean pk;
     final boolean notNull;
     final ForeignKey fk;
+
+    public void setAutoNumber() {
+        this.isAutoNumber = true;
+    }
 
     public Column(String name, String attrType) {
         this(name, false, false, null, attrType);
@@ -56,6 +68,34 @@ public class Table {
 
     public Table(String t, ArrayList<Column> c) { this(t); this.columns = c; }
 
+    public void populateFromCSV() {
+        this.populateFromCSV(this.tableName.toLowerCase() + "_data_ok.dat");
+    }
+
+    public void populateFromCSV(String filePath) {
+        String fileContents = null;
+        try {
+            Path path = Paths.get(new String(filePath.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+            fileContents = new String (Files.readAllBytes(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        String[] lines = fileContents.split("\n");
+        String[] mapper = lines[0].split(",");
+        for(int i = 1; i < lines.length; i++) {
+            HashMap<String, String> insertMap = new HashMap<>();
+            String[] currentVals = lines[i].split(",");
+            for(int j = 0; j < currentVals.length; j++) {
+                String insertVal =  currentVals[j];
+                if(insertVal.trim().equals(""))
+                    insertVal = "null";
+                insertMap.put(mapper[j].trim(), insertVal.trim());
+            }
+            this.insert(insertMap);
+        }
+    }
+
     public void insert(String ... values) {
         String[] newRow = new String[columns.size()];
         for(int i = 0; i < columns.size(); i++) {
@@ -72,6 +112,9 @@ public class Table {
         values.forEach((col,val) -> {
             if(val == null && (getColumn(col).pk || getColumn(col).notNull))
                 throw new RuntimeException("PK column may never be null, NOT NULL may never be null");
+            if(getColumn(col).isAutoNumber)
+                val = "" + getColumn(col).autonumberIndex++;
+
             newRow[columns.indexOf(getColumn(col))] = val;
         });
         rows.add(newRow);
@@ -122,7 +165,7 @@ public class Table {
             if(c.name.toLowerCase().equals(colName.toLowerCase()))
                 return c;
         }
-        throw new RuntimeException("No such column in table");
+        throw new RuntimeException("No such column in table (" + colName +")");
     }
     String getCreationStatement() {
         StringBuilder pkc = new StringBuilder()
