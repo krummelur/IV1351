@@ -34,14 +34,14 @@ public class BostadBast {
         .addColumn(new Column("cykelrumsid", true, true, null, "integer").setAutoNumber())
         .addColumn(new Column("husid", false, false,
                 new ForeignKey(hus, hus.getColumn("husid")), "integer"))
-        .addColumn(new Column("beteckning", "varchar(128)"))
+        .addColumn(new Column("beteckning", false, false ,null,  false,"varchar(60)"))
         .addColumn(new Column("yta", "integer"));
 
         Table tvättstuga = new Table("Tvättstuga")
                 .addColumn(new Column("tvättstugeid", true, true, null, "integer").setAutoNumber())
                 .addColumn(new Column("husid", false, false,
         new ForeignKey(hus, hus.getColumn("husid")), "integer"))
-        .addColumn(new Column("beteckning", "varchar(128)"))
+        .addColumn(new Column("beteckning", false, false ,null,  false,"varchar(60)"))
         .addColumn(new Column("yta", "integer"));
 
         Table maskin = new Table("Maskin")
@@ -64,7 +64,7 @@ public class BostadBast {
 
         Table besiktning = new Table("Besiktning")
         .addColumn(new Column("hissid", false, true, new ForeignKey(hiss, hiss.getColumn("hissid")), "integer"))
-        .addColumn(new Column("datum", false, true, "integer"))
+        .addColumn(new Column("datum", false, true, "date"))
         .addColumn(new Column("hissbesiktningsföretag", false, false,
                 new ForeignKey(hissBestiktningsFöretag, hissBestiktningsFöretag.getColumn("organisationsnummer")), "integer"));
 
@@ -90,8 +90,8 @@ public class BostadBast {
                 .addColumn(new Column("personnummer", true, true, null, "BIGINT"));
 
         Table ägandeskap = new Table("Ägandeskap")
-                .addColumn(new Column("köpdatum", false, true, null, "integer"))
-                .addColumn(new Column("säljdatum", false, false, null,false,"integer"))
+                .addColumn(new Column("köpdatum", false, true, null, "date"))
+                .addColumn(new Column("säljdatum", false, false, null,false,"date"))
                 .addColumn(new Column("procentandel", false, false, null, "float"))
                 .addColumn(new Column("bostadsrättsid", false, true,
                         new ForeignKey(bostadsrätt, bostadsrätt.getColumn("bostadsrättsid")), "integer"))

@@ -189,12 +189,12 @@ public class Table {
             for(int i = 0; i < r.length; i++) {
                 Column insertColumn = this.columns.get(i);
                 if(!insertColumn.isAutoNumber) {
-                    if(r[i] == null)
-                        System.out.println("hmm");
                     String value =  r[i].trim();
-                    if(value.equals(""))
+                    if(value.equals("") || value.equals("null")) {
                         value = "null";
-                    else if(insertColumn.attrType.toLowerCase().contains("varchar"))
+                    }
+                    else if(insertColumn.attrType.toLowerCase().contains("varchar") ||
+                            insertColumn.attrType.toLowerCase().contains("date"))
                         value = "\'"+value+"\'";
                     psb.append(value+",");
                 }
