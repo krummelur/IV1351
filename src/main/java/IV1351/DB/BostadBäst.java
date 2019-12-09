@@ -14,7 +14,8 @@ public class BostadBäst {
     public static ArrayList<Table> tables() {
         Table brf = new Table("Bostadsrättsförening")
         .addColumn(new Column("organisationsNummer", true, true, "integer"))
-        .addColumn(new Column("namn", true, false, "varchar(128)"));
+        .addColumn(new Column("namn", true, false, "varchar(128)"))
+        .addColumn(new Column("multiplapplatser", false, false, "boolean"));
 
         Table bostadsrättsgupp = new Table("Bostadsrättsgrupp")
         .addColumn(new Column("bostadsrättsgruppsid", true, true, "integer"))
@@ -37,9 +38,9 @@ public class BostadBäst {
         .addColumn(new Column("yta", "integer"));
 
         Table tvättstuga = new Table("Tvättstuga")
-        .addColumn(new Column("tvättstugeid", true, true, null, "integer"))
-        .addColumn(new Column("husid", false, false,
-                new ForeignKey(hus, hus.getColumn("husid")), "integer"))
+                .addColumn(new Column("tvättstugeid", true, true, null, "integer"))
+                .addColumn(new Column("husid", false, false,
+        new ForeignKey(hus, hus.getColumn("husid")), "integer"))
         .addColumn(new Column("beteckning", "varchar(128)"))
         .addColumn(new Column("yta", "integer"));
 
@@ -64,7 +65,7 @@ public class BostadBäst {
         Table besiktning = new Table("Besiktning")
         .addColumn(new Column("hissid", false, true, new ForeignKey(hiss, hiss.getColumn("hissid")), "integer"))
         .addColumn(new Column("datum", false, true, "integer"))
-        .addColumn(new Column("hissbesiktningsföretag", false, false,
+        .addColumn(new Column("h 9issbesiktningsföretag", false, false,
                 new ForeignKey(hissBestiktningsFöretag, hissBestiktningsFöretag.getColumn("organisationsnummer")), "integer"));
 
         Table bostadsrätt = new Table("Bostadsrätt")
