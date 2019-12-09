@@ -1,0 +1,5 @@
+1;"Solgläntan";1
+2;"Månen";0
+3;"Mars";0
+4;"Jorden";1
+5;"Venus";0

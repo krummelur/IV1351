@@ -1,0 +1,5 @@
+"Grävmaskin";2;6
+"Torkskåp";6;100
+"Torktumlare";1;15
+"Tvättmaskin";1;10
+"Tvättmaskin";2;5
