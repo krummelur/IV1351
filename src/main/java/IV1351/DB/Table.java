@@ -208,6 +208,7 @@ public class Table {
     }
 
     String getCreationStatement() {
+        StringBuilder fkc = new StringBuilder();
         StringBuilder pkc = new StringBuilder()
         .append(" PRIMARY KEY(");
 
@@ -226,13 +227,16 @@ public class Table {
             if(c.isAutoNumber)
                 sb.append("AUTO_INCREMENT ");
 
-            if (c.fk != null)
-                sb.append("REFERENCES " + c.fk.fromTable.tableName + "(" + c.fk.fromKey.name + ")");
+            if (c.fk != null) {
+                fkc.append("FOREIGN KEY (`" + c.name + "`)")
+                        .append("\nREFERENCES " + c.fk.fromTable.tableName + "(" + c.fk.fromKey.name + "),\n");
+            }
             sb.append(",\n");
         }
 
         //if(sb.lastIndexOf(",") != -1)
         //    sb.replace(sb.length()-1, sb.length(), "");
+        sb.append(fkc.toString());
 
         if(pkc.lastIndexOf(",") != -1)
             pkc.replace(pkc.length()-1, pkc.length(), "");

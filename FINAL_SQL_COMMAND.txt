@@ -7,52 +7,74 @@ multiplapplatser boolean NOT NULL ,
  PRIMARY KEY( organisationsnummer));
 create table `Bostadsrättsgrupp` (bostadsrättsgruppsid integer NOT NULL UNIQUE AUTO_INCREMENT ,
 namn varchar(128) NOT NULL ,
-bostadsrättsförening integer NOT NULL REFERENCES Bostadsrättsförening(organisationsnummer),
+bostadsrättsförening integer NOT NULL ,
+FOREIGN KEY (`bostadsrättsförening`)
+REFERENCES Bostadsrättsförening(organisationsnummer),
  PRIMARY KEY( bostadsrättsgruppsid));
 create table `Hus` (husid integer NOT NULL UNIQUE AUTO_INCREMENT ,
-bostadsrättsförening integer NOT NULL REFERENCES Bostadsrättsförening(organisationsnummer),
+bostadsrättsförening integer NOT NULL ,
 gatuadress varchar(128) NOT NULL ,
 postadress varchar(128) NOT NULL ,
 byggår integer NOT NULL ,
+FOREIGN KEY (`bostadsrättsförening`)
+REFERENCES Bostadsrättsförening(organisationsnummer),
  PRIMARY KEY( husid));
 create table `Cykelrum` (cykelrumsid integer NOT NULL UNIQUE AUTO_INCREMENT ,
-husid integer NOT NULL REFERENCES Hus(husid),
+husid integer NOT NULL ,
 beteckning varchar(60) ,
 yta integer NOT NULL ,
+FOREIGN KEY (`husid`)
+REFERENCES Hus(husid),
  PRIMARY KEY( cykelrumsid));
 create table `Tvättstuga` (tvättstugeid integer NOT NULL UNIQUE AUTO_INCREMENT ,
-husid integer NOT NULL REFERENCES Hus(husid),
+husid integer NOT NULL ,
 beteckning varchar(60) ,
 yta integer NOT NULL ,
+FOREIGN KEY (`husid`)
+REFERENCES Hus(husid),
  PRIMARY KEY( tvättstugeid));
 create table `Maskin` (maskintyp varchar(128) NOT NULL ,
-tvättstugeid integer NOT NULL REFERENCES Tvättstuga(tvättstugeid),
+tvättstugeid integer NOT NULL ,
 antal integer NOT NULL ,
+FOREIGN KEY (`tvättstugeid`)
+REFERENCES Tvättstuga(tvättstugeid),
  PRIMARY KEY( maskintyp, tvättstugeid));
 create table `Hiss` (hissid integer NOT NULL UNIQUE AUTO_INCREMENT ,
 beteckning varchar(25) ,
 maxvikt integer NOT NULL ,
 maxantalpersoner integer NOT NULL ,
-husid integer NOT NULL REFERENCES Hus(husid),
+husid integer NOT NULL ,
+FOREIGN KEY (`husid`)
+REFERENCES Hus(husid),
  PRIMARY KEY( hissid));
 create table `hissbesiktningsföretag` (organisationsnummer integer NOT NULL UNIQUE ,
 namn varchar(128) NOT NULL UNIQUE ,
  PRIMARY KEY( organisationsnummer));
-create table `Besiktning` (hissid integer NOT NULL REFERENCES Hiss(hissid),
+create table `Besiktning` (hissid integer NOT NULL ,
 datum date NOT NULL ,
-hissbesiktningsföretag integer NOT NULL REFERENCES hissbesiktningsföretag(organisationsnummer),
+hissbesiktningsföretag integer NOT NULL ,
+FOREIGN KEY (`hissid`)
+REFERENCES Hiss(hissid),
+FOREIGN KEY (`hissbesiktningsföretag`)
+REFERENCES hissbesiktningsföretag(organisationsnummer),
  PRIMARY KEY( hissid, datum));
 create table `Bostadsrätt` (bostadsrättsid integer NOT NULL UNIQUE AUTO_INCREMENT ,
-husid integer NOT NULL REFERENCES Hus(husid),
+husid integer NOT NULL ,
 lägenhetsnummer integer NOT NULL ,
 yta integer NOT NULL ,
 typ varchar(20) NOT NULL ,
 våning integer NOT NULL ,
-bostadsrättsgurppsid integer NOT NULL REFERENCES Bostadsrättsgrupp(bostadsrättsgruppsid),
+bostadsrättsgurppsid integer NOT NULL ,
+FOREIGN KEY (`husid`)
+REFERENCES Hus(husid),
+FOREIGN KEY (`bostadsrättsgurppsid`)
+REFERENCES Bostadsrättsgrupp(bostadsrättsgruppsid),
  PRIMARY KEY( bostadsrättsid));
 create table `Årsavgift` (verksamhetsår integer NOT NULL ,
-bostadsrättsgruppsid integer NOT NULL REFERENCES Bostadsrättsgrupp(bostadsrättsgruppsid),
+bostadsrättsgruppsid integer NOT NULL ,
 belopp integer NOT NULL ,
+FOREIGN KEY (`bostadsrättsgruppsid`)
+REFERENCES Bostadsrättsgrupp(bostadsrättsgruppsid),
  PRIMARY KEY( verksamhetsår, bostadsrättsgruppsid));
 create table `Person` (namn varchar(128) NOT NULL ,
 personnummer BIGINT NOT NULL UNIQUE ,
@@ -60,27 +82,45 @@ personnummer BIGINT NOT NULL UNIQUE ,
 create table `Ägandeskap` (köpdatum date NOT NULL ,
 säljdatum date ,
 procentandel float NOT NULL ,
-bostadsrättsid integer NOT NULL REFERENCES Bostadsrätt(bostadsrättsid),
-person BIGINT NOT NULL REFERENCES Person(personnummer),
+bostadsrättsid integer NOT NULL ,
+person BIGINT NOT NULL ,
+FOREIGN KEY (`bostadsrättsid`)
+REFERENCES Bostadsrätt(bostadsrättsid),
+FOREIGN KEY (`person`)
+REFERENCES Person(personnummer),
  PRIMARY KEY( köpdatum, bostadsrättsid, person));
-create table `Parkeringsköplats` (bostadsrättsid integer NOT NULL REFERENCES Bostadsrätt(bostadsrättsid),
+create table `Parkeringsköplats` (bostadsrättsid integer NOT NULL ,
 tidsstämpel integer NOT NULL ,
+FOREIGN KEY (`bostadsrättsid`)
+REFERENCES Bostadsrätt(bostadsrättsid),
  PRIMARY KEY( bostadsrättsid));
-create table `Parkeringsplatstyp` (bostadsrättsförening integer NOT NULL REFERENCES Bostadsrättsförening(organisationsnummer),
+create table `Parkeringsplatstyp` (bostadsrättsförening integer NOT NULL ,
 typid integer NOT NULL UNIQUE AUTO_INCREMENT ,
 beskrivning varchar(50) NOT NULL ,
+FOREIGN KEY (`bostadsrättsförening`)
+REFERENCES Bostadsrättsförening(organisationsnummer),
  PRIMARY KEY( typid));
-create table `Köplatsrad` (typid integer NOT NULL REFERENCES Parkeringsplatstyp(typid),
-bostadsrättsid integer NOT NULL REFERENCES Bostadsrätt(bostadsrättsid),
+create table `Köplatsrad` (typid integer NOT NULL ,
+bostadsrättsid integer NOT NULL ,
+FOREIGN KEY (`typid`)
+REFERENCES Parkeringsplatstyp(typid),
+FOREIGN KEY (`bostadsrättsid`)
+REFERENCES Bostadsrätt(bostadsrättsid),
  PRIMARY KEY( typid, bostadsrättsid));
 create table `Parkeringsårsavgift` (startår integer NOT NULL ,
-typid integer NOT NULL REFERENCES Parkeringsplatstyp(typid),
+typid integer NOT NULL ,
 pris integer NOT NULL ,
+FOREIGN KEY (`typid`)
+REFERENCES Parkeringsplatstyp(typid),
  PRIMARY KEY( startår, typid));
 create table `Parkeringsplats` (nummer integer NOT NULL ,
-typid integer NOT NULL REFERENCES Parkeringsplatstyp(typid),
+typid integer NOT NULL ,
 gpskoordinat integer NOT NULL UNIQUE ,
-bostadsrättsid integer UNIQUE REFERENCES Bostadsrätt(bostadsrättsid),
+bostadsrättsid integer UNIQUE ,
+FOREIGN KEY (`typid`)
+REFERENCES Parkeringsplatstyp(typid),
+FOREIGN KEY (`bostadsrättsid`)
+REFERENCES Bostadsrätt(bostadsrättsid),
  PRIMARY KEY( nummer, typid));
 
 INSERT INTO `Bostadsrättsförening` ( `organisationsnummer`, `namn`, `multiplapplatser`)
@@ -100,9 +140,12 @@ VALUES ('2or',769632),
 ('stora',324543),
 ('små',324543),
 ('lgh',757433),
-('lghgr. 1',984632),
-('lghgr. 2',984632),
-('lghgr. 3',984632);
+('lghr. 1',984632),
+('lghr. 2',984632),
+('lghr. 3',984632),
+('grupp 1',757433),
+('grupp 2',757433),
+('stora lgh',984632);
 INSERT INTO `Hus` ( `bostadsrättsförening`, `gatuadress`, `postadress`, `byggår`)
 VALUES (769632,'Månvägen 1','12345',1976),
 (769632,'Månvägen 2','12345',1974),

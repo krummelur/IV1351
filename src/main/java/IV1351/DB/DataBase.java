@@ -49,7 +49,8 @@ public class DataBase {
     }
     public String toSQLPopulation() {
         StringBuilder sb = new StringBuilder();
-        tables.forEach(table -> sb.append(table.getPopulationStatement() + "\n"));
+        for(Table t : this.tables)
+            sb.append(t.getPopulationStatement() + "\n");
         return sb.toString();
     }
 }
