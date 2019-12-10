@@ -1,5 +1,9 @@
 package IV1351.DB;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,12 +18,19 @@ class ForeignKey {
 }
 
 class Column {
+    boolean isAutoNumber = false;
+    int autonumberIndex = 1;
     final String attrType;
     final String name;
     final boolean unique;
     final boolean pk;
     final boolean notNull;
     final ForeignKey fk;
+
+    public Column setAutoNumber() {
+        this.isAutoNumber = true;
+        return this;
+    }
 
     public Column(String name, String attrType) {
         this(name, false, false, null, attrType);
@@ -56,6 +67,34 @@ public class Table {
 
     public Table(String t, ArrayList<Column> c) { this(t); this.columns = c; }
 
+    public void populateFromCSV() {
+        this.populateFromCSV(this.tableName.toLowerCase() + "_data_ok.dat");
+    }
+
+    public void populateFromCSV(String filePath) {
+        String fileContents = null;
+        try {
+            Path path = Paths.get(new String(filePath.getBytes("UTF-8")));
+            fileContents = new String (Files.readAllBytes(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        String[] lines = fileContents.split("\n");
+        String[] mapper = lines[0].split(",");
+        for(int i = 1; i < lines.length; i++) {
+            HashMap<String, String> insertMap = new HashMap<>();
+            String[] currentVals = lines[i].split(",");
+            for(int j = 0; j < currentVals.length; j++) {
+                String insertVal =  currentVals[j];
+                if(insertVal.trim().equals(""))
+                    insertVal = "null";
+                insertMap.put(mapper[j].trim(), insertVal.trim());
+            }
+            this.insert(insertMap);
+        }
+    }
+
     public void insert(String ... values) {
         String[] newRow = new String[columns.size()];
         for(int i = 0; i < columns.size(); i++) {
@@ -72,6 +111,11 @@ public class Table {
         values.forEach((col,val) -> {
             if(val == null && (getColumn(col).pk || getColumn(col).notNull))
                 throw new RuntimeException("PK column may never be null, NOT NULL may never be null");
+            if(getColumn(col).isAutoNumber)
+                val = "" + getColumn(col).autonumberIndex++;
+
+            if(val == null)
+                System.out.println("hmm");
             newRow[columns.indexOf(getColumn(col))] = val;
         });
         rows.add(newRow);
@@ -122,9 +166,49 @@ public class Table {
             if(c.name.toLowerCase().equals(colName.toLowerCase()))
                 return c;
         }
-        throw new RuntimeException("No such column in table");
+        throw new RuntimeException("No such column in table (" + colName +")");
     }
+
+    private void removeTrailingChars(String match, StringBuilder sb) {
+        if(sb.lastIndexOf(match) != -1)
+            sb.replace(sb.length()-match.length(), sb.length(), "");
+    }
+
+    String getPopulationStatement() {
+        StringBuilder psb = new StringBuilder()
+                .append("INSERT INTO `" + this.tableName +"` (");
+        for(Column c : this.columns) {
+            if(!c.isAutoNumber)
+                psb.append(" `" + c.name + "`,");
+        }
+        this.removeTrailingChars(",", psb);
+        psb.append(")\nVALUES ");
+
+        for(String[] r : this.rows) {
+            psb.append("(");
+            for(int i = 0; i < r.length; i++) {
+                Column insertColumn = this.columns.get(i);
+                if(!insertColumn.isAutoNumber) {
+                    String value =  r[i].trim();
+                    if(value.equals("") || value.equals("null")) {
+                        value = "null";
+                    }
+                    else if(insertColumn.attrType.toLowerCase().contains("varchar") ||
+                            insertColumn.attrType.toLowerCase().contains("date"))
+                        value = "\'"+value+"\'";
+                    psb.append(value+",");
+                }
+            }
+            this.removeTrailingChars(",",psb);
+            psb.append("),\n");
+        }
+        this.removeTrailingChars(",\n",psb);
+        psb.append(";");
+        return psb.toString();
+    }
+
     String getCreationStatement() {
+        StringBuilder fkc = new StringBuilder();
         StringBuilder pkc = new StringBuilder()
         .append(" PRIMARY KEY(");
 
@@ -140,13 +224,19 @@ public class Table {
                 sb.append("NOT NULL ");
             if(c.unique)
                 sb.append("UNIQUE ");
-            if (c.fk != null)
-                sb.append("REFERENCES " + c.fk.fromTable.tableName + "(" + c.fk.fromKey.name + ")");
-            sb.append(",");
+            if(c.isAutoNumber)
+                sb.append("AUTO_INCREMENT ");
+
+            if (c.fk != null) {
+                fkc.append("FOREIGN KEY (`" + c.name + "`)")
+                        .append("\nREFERENCES " + c.fk.fromTable.tableName + "(" + c.fk.fromKey.name + "),\n");
+            }
+            sb.append(",\n");
         }
 
         //if(sb.lastIndexOf(",") != -1)
         //    sb.replace(sb.length()-1, sb.length(), "");
+        sb.append(fkc.toString());
 
         if(pkc.lastIndexOf(",") != -1)
             pkc.replace(pkc.length()-1, pkc.length(), "");

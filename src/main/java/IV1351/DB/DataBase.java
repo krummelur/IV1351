@@ -37,13 +37,20 @@ public class DataBase {
      * Generates the SQL querys necessary to recreate the database, including all data
      * @return the String representation of the SQL for this database
      */
-    public String toSQL() {
+    public String toSQLCreation() {
         StringBuilder sb = new StringBuilder();
-        sb.append("CREATE SCHEMA `"+ this.name +"` DEFAULT CHARACTER SET big5;\n");
+        sb.append("DROP DATABASE `"+ this.name + "`;\n");
+        sb.append("CREATE SCHEMA `"+ this.name +"` DEFAULT CHARACTER SET latin1;\n");
         sb.append("USE "+ this.name +";\n");
         for(Table t :  this.tables)
             sb.append(t.getCreationStatement());
         //TODO: implement maybe
+        return sb.toString();
+    }
+    public String toSQLPopulation() {
+        StringBuilder sb = new StringBuilder();
+        for(Table t : this.tables)
+            sb.append(t.getPopulationStatement() + "\n");
         return sb.toString();
     }
 }
