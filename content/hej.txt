@@ -1,5 +1,0 @@
-.flat
-kalla inte på callbacks
-map har element och index
-asynkrona funktioner returnerar omedelbart
-redux

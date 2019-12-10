@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<BostadBäst>
+	<Bostadsrättsförening orgnr="1" namn="Solgläntan">
+		<Hus husid="1" gatuadress="Solvägen 1" postadress="12345">
+			<Hiss hissid="1"/>
+			<Hiss hissid="2"/>
+			<Tvättstuga tvättstugeid="1" beteckning="Tvättstuga 1">
+				<Maskin maskintyp="Solarium" antal="20"/>
+			</Tvättstuga>
+		</Hus>
+		<Hus husid="2" gatuadress="Solvägen 2" postadress="12345">
+			<Hiss hissid="3"/>
+		</Hus>
+		<Hus husid="3" gatuadress="Solvägen 3" postadress="12346">
+			<Tvättstuga tvättstugeid="2" beteckning="Tvättstuga 1">
+				<Maskin maskintyp="Tvättmaskin" antal="100"/>
+				<Maskin maskintyp="Torktumlare" antal="1"/>
+			</Tvättstuga>
+		</Hus>
+	</Bostadsrättsförening>
+
+	<Bostadsrättsförening orgnr="2" namn="Mångläntan">
+		<Hus husid="4" gatuadress="Månvägen 1" postadress="34566">
+			<Tvättstuga tvättstugeid="3" beteckning="">
+				<Maskin maskintyp="Mangel" antal="20"/>
+			</Tvättstuga>
+		</Hus>
+		<Hus husid="5" gatuadress="Månvägen 2" postadress="34566">
+			<Hiss hissid="4"/>
+			<Hiss hissid="5"/>
+			<Hiss hissid="6"/>
+		</Hus>
+		<Hus husid="6" gatuadress="Månvägen 3" postadress="34567">
+			<Tvättstuga tvättstugeid="4" beteckning="Tvättstuga 1">
+				<Maskin maskintyp="Tvättmaskin" antal="1"/>
+				<Maskin maskintyp="Torktumlare" antal="1"/>
+			</Tvättstuga>
+		</Hus>
+	</Bostadsrättsförening>
+</BostadBäst>

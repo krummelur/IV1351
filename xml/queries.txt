@@ -1,0 +1,40 @@
+10)
+
+<Resultat>
+{
+for $brf in doc("projekt.xml")/BostadBäst/Bostadsrättsförening
+	for $Hus in $brf/Hus
+		where $Hus/Hiss 
+		return <Hus förening="{$brf/@namn}" adress="{concat($Hus/@gatuadress,", " ,$Hus/@postadress)}"/>
+}
+</Resultat>
+
+Exekveringsresultat:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Resultat>
+   <Hus förening="Solgläntan" adress="Solvägen 1, 12345"/>
+   <Hus förening="Solgläntan" adress="Solvägen 2, 12345"/>
+   <Hus förening="Mångläntan" adress="Månvägen 2, 34566"/>
+</Resultat>
+
+11)
+
+12)
+
+<Resultat>
+{
+for $brf in doc("projekt.xml")/BostadBäst/Bostadsrättsförening
+	let $antal := count($brf/Hus)
+	return <Förening orgnr="{$brf/@orgnr}" namn="{$brf/@namn}" antalhus="{data($antal)}"/>		
+}	
+</Resultat>
+
+Exekveringsresultat:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Resultat>
+   <Förening namn="Solgläntan" orgnr="1" antalhus="3"/>
+   <Förening namn="Mångläntan" orgnr="2" antalhus="3"/>
+</Resultat>
+
