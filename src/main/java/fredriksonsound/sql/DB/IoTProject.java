@@ -1,12 +1,9 @@
-package IV1351.DB;
-
-import sun.jvm.hotspot.types.CIntegerField;
+package fredriksonsound.sql.DB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class iotProject {
-
+public class IoTProject {
     /**
      * All the tables complete with attributes and PK, FK constraints
      * @return list of tables
@@ -59,7 +56,6 @@ public class iotProject {
                 .addColumn(new Column("orgnr", true, true, "string"))
                 .addColumn(new Column("name", true, false, "string"));
 
-
         Table users = new Table("users")
                 .addColumn(new Column("username", true, true, "string"))
                 .addColumn(new Column("email", true, false, "string"))
@@ -78,12 +74,8 @@ public class iotProject {
                 .addColumn(new Column("start_time_epoch", false, false, null, "integer"))
                 .addColumn(new Column("end_time_epoch", false, false, null, "integer"));
 
-
-
         ArrayList<Table> allTables = new ArrayList<>(Arrays.asList(location, tracker, receiver, interest, trackerInterest, display,
                 advertisementVideo, playedAdvert, agency, users, orders, advertisementOrder));
-        //System.out.println(hissBestiktningsFöretag.getPopulationStatement());
-        //System.exit(0);
         return allTables;
     }
 }

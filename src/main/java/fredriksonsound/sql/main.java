@@ -1,13 +1,12 @@
-package IV1351;
+package fredriksonsound.sql;
 
-import IV1351.DB.BostadBast;
-import IV1351.DB.DataBase;
-import IV1351.DB.iotProject;
+import fredriksonsound.sql.DB.DataBase;
+import fredriksonsound.sql.DB.IoTProject;
 
 public class main {
     public static void main(String[] args) {
         DataBase db = new DataBase("iot_project_db");
-        iotProject.tables().forEach(db::addTable);
+        IoTProject.tables().forEach(db::addTable);
         //db.toXMLSchema();
         System.out.println(db.toSQLCreation());
         //System.out.println(db.toSQLPopulation());

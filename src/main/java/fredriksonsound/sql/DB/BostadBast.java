@@ -1,9 +1,6 @@
-package IV1351.DB;
-
-import IV1351.DB.Table;
+package fredriksonsound.sql.DB;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BostadBast {
     /**
@@ -11,7 +8,8 @@ public class BostadBast {
      * @return list of tables
      */
     public static ArrayList<Table> tables() {
-/*
+        //Commented out because wouldn't compile with å,ä,ö...
+        /*
         Table brf = new Table("Bostadsrättsförening")
         .addColumn(new Column("organisationsnummer", true, true, "integer"))
         .addColumn(new Column("namn", true, false, "varchar(128)"))
@@ -109,7 +107,6 @@ public class BostadBast {
                 .addColumn(new Column("typid", true, true, null, "integer").setAutoNumber())
                 .addColumn(new Column("beskrivning", false, false, null, "varchar(50)"));
 
-
         Table köplatsrad = new Table("Köplatsrad")
                 .addColumn(new Column("typid", false, true,
                         new ForeignKey(parkeringsplatstyp, parkeringsplatstyp.getColumn("typid")), "integer"))
@@ -134,8 +131,6 @@ public class BostadBast {
                 besiktning, bostadsrätt, årsavgift, person, ägandeskap, parkeringsköplats, parkeringsplatstyp, köplatsrad,
                 parkeringsårsavgift, parkeringsplats));
         allTables.forEach(t -> t.populateFromCSV());
-        //System.out.println(hissBestiktningsFöretag.getPopulationStatement());
-        //System.exit(0);
         return allTables;
         */
         return null;

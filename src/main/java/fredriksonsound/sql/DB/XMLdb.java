@@ -1,4 +1,4 @@
-package IV1351.DB;
+package fredriksonsound.sql.DB;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;

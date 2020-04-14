@@ -1,4 +1,4 @@
-package IV1351.DB;
+package fredriksonsound.sql.DB;
 
 import java.io.IOException;
 import java.nio.file.Files;

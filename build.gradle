@@ -1,4 +1,4 @@
-group 'IV1351'
+group 'fredriksonsound'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'

@@ -3,9 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ID1020-Sample-data.iml" filepath="$PROJECT_DIR$/.idea/modules/ID1020-Sample-data.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IV1351-Sample-data.iml" filepath="$PROJECT_DIR$/.idea/modules/IV1351-Sample-data.iml" group="IV1351-Sample-data" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IV1351-Sample-data_main.iml" filepath="$PROJECT_DIR$/.idea/modules/IV1351-Sample-data_main.iml" group="IV1351-Sample-data" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IV1351-Sample-data_test.iml" filepath="$PROJECT_DIR$/.idea/modules/IV1351-Sample-data_test.iml" group="IV1351-Sample-data" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SQL-generator.iml" filepath="$PROJECT_DIR$/.idea/modules/SQL-generator.iml" group="SQL-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SQL-generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SQL-generator_main.iml" group="SQL-generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SQL-generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SQL-generator_test.iml" group="SQL-generator" />
     </modules>
   </component>
 </project>

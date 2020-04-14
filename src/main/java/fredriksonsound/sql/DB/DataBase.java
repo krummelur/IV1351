@@ -1,4 +1,4 @@
-package IV1351.DB;
+package fredriksonsound.sql.DB;
 
 //import org.dom4j.Document;
 
@@ -34,7 +34,7 @@ public class DataBase {
     }
     */
     /**
-     * Generates the SQL querys necessary to recreate the database, including all data
+     * Generates the SQL statements necessary to recreate the database.
      * @return the String representation of the SQL for this database
      */
     public String toSQLCreation() {
@@ -47,6 +47,12 @@ public class DataBase {
         //TODO: implement maybe
         return sb.toString();
     }
+
+    /**
+     * Generates the SQL statements necessary to populate the database
+     * The data for each table must exist as csv in a file named [TABLE_NAME]_ok.dat
+     * @return String representation of database data as sql statements.
+     */
     public String toSQLPopulation() {
         StringBuilder sb = new StringBuilder();
         for(Table t : this.tables)

@@ -6,6 +6,8 @@
       <module name="ID1020-Sample-data_test" target="1.8" />
       <module name="IV1351-Sample-data_main" target="1.8" />
       <module name="IV1351-Sample-data_test" target="1.8" />
+      <module name="SQL-generator_main" target="1.8" />
+      <module name="SQL-generator_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
