@@ -39,7 +39,7 @@ public class DataBase {
      */
     public String toSQLCreation() {
         StringBuilder sb = new StringBuilder();
-        sb.append("DROP DATABASE `"+ this.name + "`;\n");
+        sb.append("DROP DATABASE IF EXISTS `"+ this.name + "`;\n");
         sb.append("CREATE SCHEMA `"+ this.name +"` DEFAULT CHARACTER SET latin1;\n");
         sb.append("USE "+ this.name +";\n");
         for(Table t :  this.tables)

@@ -45,6 +45,8 @@ class Column {
         this(name, unique, pk, fk, true, attrType);
     }
     public Column(String name, boolean unique, boolean pk, ForeignKey fk, boolean notNull, String attrType) {
+        if(attrType.equals("string"))
+            attrType = "varchar(128)";
         if(fk != null && !fk.fromKey.attrType.toLowerCase().equals(attrType.toLowerCase()))
             throw new RuntimeException("Foreign key type must match");
 

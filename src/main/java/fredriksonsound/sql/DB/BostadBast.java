@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BostadBast {
-
     /**
      * All the tables complete with attributes and PK, FK constraints
      * @return list of tables
      */
     public static ArrayList<Table> tables() {
+/*
         Table brf = new Table("Bostadsrättsförening")
         .addColumn(new Column("organisationsnummer", true, true, "integer"))
         .addColumn(new Column("namn", true, false, "varchar(128)"))
@@ -137,5 +137,7 @@ public class BostadBast {
         //System.out.println(hissBestiktningsFöretag.getPopulationStatement());
         //System.exit(0);
         return allTables;
+        */
+        return null;
     }
 }
