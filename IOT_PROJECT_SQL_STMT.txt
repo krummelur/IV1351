@@ -1,11 +1,11 @@
 DROP DATABASE IF EXISTS `iot_project_db`;
-CREATE SCHEMA `iot_project_db` DEFAULT CHARACTER SET latin1;
+CREATE SCHEMA `iot_project_db`;
 USE iot_project_db;
 create table `location` (name varchar(128) NOT NULL ,
 id integer NOT NULL UNIQUE AUTO_INCREMENT ,
  PRIMARY KEY( id));
 create table `rfid_tracker` (id integer NOT NULL UNIQUE ,
-location integer NOT NULL ,
+location integer ,
 FOREIGN KEY (`location`)
 REFERENCES location(id),
  PRIMARY KEY( id));
@@ -68,3 +68,5 @@ REFERENCES advertisement_video(id),
 FOREIGN KEY (`orders`)
 REFERENCES orders(id),
  PRIMARY KEY( video, orders));
+CREATE TABLE refresh_token (`refresh_token` BLOB, INDEX(`refresh_token`(10)), id varchar(40) NOT NULL ,
+  PRIMARY KEY(id));

@@ -16,7 +16,7 @@ public class IoTProject {
         Table tracker = new Table("rfid_tracker")
                 .addColumn(new Column("id", true, true, "integer"))
                 .addColumn(new Column("location", false, false,
-                        new ForeignKey(location, location.getColumn("id")), "integer"));
+                        new ForeignKey(location, location.getColumn("id")), false, "integer"));
 
         Table receiver = new Table("rfid_receiver")
                 .addColumn(new Column("id", true, true, "integer"))
@@ -74,8 +74,11 @@ public class IoTProject {
                 .addColumn(new Column("start_time_epoch", false, false, null, "integer"))
                 .addColumn(new Column("end_time_epoch", false, false, null, "integer"));
 
+        Table refresh_token = new Table("refresh_token").addColumn(new Column("token", true, true, null, "BLOB"))
+                .addColumn( new Column("id", false, false, "varchar(40)"));
+
         ArrayList<Table> allTables = new ArrayList<>(Arrays.asList(location, tracker, receiver, interest, trackerInterest, display,
-                advertisementVideo, playedAdvert, agency, users, orders, advertisementOrder));
+                advertisementVideo, playedAdvert, agency, users, orders, advertisementOrder, refresh_token));
         return allTables;
     }
 }
