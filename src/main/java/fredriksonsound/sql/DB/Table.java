@@ -218,9 +218,9 @@ public class Table {
         .append("create table ")
         .append("`" + tableName + "` (");
         for(Column c: this.columns){
-        sb.append(c.name + " " + c.attrType + " ");
+        sb.append("`"+c.name + "` " + c.attrType + " ");
         if(c.pk)
-            pkc.append(" " + c.name + ",");
+            pkc.append(" `" + c.name + "`,");
 
             if (c.notNull)
                 sb.append("NOT NULL ");
@@ -231,7 +231,7 @@ public class Table {
 
             if (c.fk != null) {
                 fkc.append("FOREIGN KEY (`" + c.name + "`)")
-                        .append("\nREFERENCES " + c.fk.fromTable.tableName + "(" + c.fk.fromKey.name + "),\n");
+                        .append("\nREFERENCES " + c.fk.fromTable.tableName + "(`" + c.fk.fromKey.name + "`),\n");
             }
             sb.append(",\n");
         }
